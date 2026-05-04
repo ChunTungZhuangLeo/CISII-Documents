@@ -1,23 +1,25 @@
 ======Reports and presentations======
 
+Due to the limitation in file uploading, all documents are hosted on GitHub. Please see attached links below.
+
 **Project Plan**
-  * {{:courses:456:2026:projects:456-2026-05:project_plan_presentation.pdf|Project plan presentation}}
-  * {{:courses:456:2026:projects:456-2026-05:eye_snake_project_proposal.pdf|Project plan proposal}}
-  * {{:courses:456:2026:projects:456-2026-05:project_functional_specs.pdf|Project functional specifications}}
-  * {{:courses:456:2026:projects:456-2026-05:project_design_specs.pdf|Project Design/Interface specifications}}
-  * {{:courses:456:2026:projects:456-2026-05:project_test_plan.pdf|Project test plan}}
-  * {{:courses:456:2026:projects:456-2026-05:project_user_documentation.pdf|Project User Documentation}}
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/01-Project-Plan/project_plan_presentation.pdf|Project plan presentation]]
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/01-Project-Plan/project_proposal.pdf|Project plan proposal]]
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/01-Project-Plan/functional_specifications.md|Project functional specifications]]
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/01-Project-Plan/design_specifications.md|Project Design/Interface specifications]]
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/01-Project-Plan/test_plan.md|Project test plan]]
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/01-Project-Plan/user_documentation.md|Project User Documentation]]
 
 **Project Background Reading**
-  * {{:courses:456:2026:projects:456-2026-05:background_reading_presentation.pdf|Background reading presentation}}
-  * {{:courses:456:2026:projects:456-2026-05:ambf_background_reading.pdf|AMBF background reading document}}
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/06-Background-Reading/background_reading_presentation.pdf|Background reading presentation]]
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/06-Background-Reading/AMBF_background_reading.pdf|AMBF background reading document]]
   * See Bibliography below for additional references.
 
 **Project Checkpoint**
-  * {{:courses:456:2026:projects:456-2026-05:checkpoint_presentation.pdf|Project checkpoint presentation}}
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/07-Project-Checkpoint/checkpoint_presentation.pdf|Project checkpoint presentation]]
 
 **Project Final Presentation**
-  * {{:courses:456:2026:projects:456-2026-05:final_poster_pdf.pdf|PDF of Poster}}
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/09-Final-Presentation/poster.pdf|PDF of Poster]]
 
 **Project Final Report**
-  * {{:courses:456:2026:projects:456-2026-05:final_report.pdf|Final Report}}
+  * [[https://github.com/ChunTungZhuangLeo/CISII-Documents/blob/main/10-Final-Report/IROS2026_paper.pdf|Final Report]]
