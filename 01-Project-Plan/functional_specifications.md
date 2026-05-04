@@ -10,7 +10,7 @@
 
 ## 1. System Overview
 
-The Eye Snake Localization System is a vision-based software pipeline that predicts the 3D position of the I²RIS (Integrated Intraocular Robotic System) snake robot's gripper tip and key segments from camera imagery during vitreoretinal surgery.
+The Eye Snake Localization System is a vision-based software pipeline that predicts the 2D image-space positions (u, v) of the I²RIS (Integrated Intraocular Robotic System) snake robot's gripper tip and key segments from camera imagery during vitreoretinal surgery.
 
 ### 1.1 Purpose
 Provide real-time, accurate localization of the snake robot tip to enable:
@@ -34,12 +34,12 @@ Vision-based localization bypasses these issues by directly observing the robot'
 
 | ID | Requirement | Priority | Acceptance Criteria |
 |----|-------------|----------|---------------------|
-| FR-1 | Predict 3D gripper tip position from RGB images | Must Have | Mean error <5mm on simulation test set |
+| FR-1 | Predict 2D keypoint positions (u, v) from RGB images | Must Have | Mean pixel error <50px on real test set |
 | FR-2 | Predict positions of first disk (segment 11) and last disk (segment 1) | Must Have | 3 keypoints tracked simultaneously |
-| FR-3 | Support multiple input modalities (RGB, point cloud, multimodal) | Must Have | At least 3 model architectures implemented |
+| FR-3 | Support multiple model architectures | Must Have | At least 6 model architectures implemented |
 | FR-4 | Achieve real-time inference (>10 Hz) | Must Have | Inference time <100ms per frame |
-| FR-5 | Generalize across different camera intrinsics | Should Have | Work with both simulation and real cameras |
-| FR-6 | Achieve sub-millimeter accuracy on real robot | Nice to Have | Mean error <1mm on real test set |
+| FR-5 | Support sim-to-real transfer learning | Must Have | Finetuning improves over real-only training |
+| FR-6 | Achieve high accuracy on real robot imagery | Nice to Have | Mean pixel error <25px on real test set |
 
 ### 2.2 Data Collection Functions
 
@@ -60,14 +60,6 @@ Vision-based localization bypasses these issues by directly observing the robot'
 | FR-14 | Compare multiple model architectures | Must Have | Benchmark 6+ approaches |
 | FR-15 | Support multi-resolution training (224, 512, 768, 1024 px) | Should Have | Resolution-dependent performance analysis |
 
-### 2.4 Integration Functions
-
-| ID | Requirement | Priority | Acceptance Criteria |
-|----|-------------|----------|---------------------|
-| FR-16 | ROS node for real-time inference | Must Have | Publish predicted positions as ROS messages |
-| FR-17 | Integration with surgical control pipeline | Should Have | Compatible with existing I²RIS control stack |
-| FR-18 | Confidence estimation for predictions | Nice to Have | Output uncertainty alongside predictions |
-
 ---
 
 ## 3. Input Specifications
@@ -83,33 +75,23 @@ Vision-based localization bypasses these issues by directly observing the robot'
 - **Coordinate System:** Camera frame (meters)
 
 ### 3.3 Ground Truth Labels
-- **Gripper tip position:** (x, y, z) in mm
-- **First disk position:** (x, y, z) in mm
-- **Last disk position:** (x, y, z) in mm
-- **2D projections:** (u, v) pixel coordinates
-
-### 3.4 Camera Parameters
-- **Intrinsic matrix K:** 3×3 focal length and principal point
-- **Extrinsic matrix T:** 4×4 camera-to-world transform
-- **Distortion coefficients:** Radial and tangential (k1, k2, p1, p2)
+- **Gripper tip position:** (u, v) pixel coordinates
+- **First disk position:** (u, v) pixel coordinates
+- **Last disk position:** (u, v) pixel coordinates
 
 ---
 
 ## 4. Output Specifications
 
 ### 4.1 Primary Output
-- **Predicted 3D position:** (x, y, z) in mm for each keypoint
 - **Predicted 2D position:** (u, v) in pixels for each keypoint
 
 ### 4.2 Secondary Output
 - **Inference time:** Milliseconds per frame
-- **Confidence score:** Optional uncertainty estimate (0-1)
 
 ### 4.3 Evaluation Metrics
-- **Mean pixel error:** Euclidean distance in image space
-- **Mean 3D error:** Euclidean distance in mm
-- **Success rate <5mm:** Percentage of predictions within 5mm
-- **Success rate <10mm:** Percentage of predictions within 10mm
+- **Mean pixel error:** Euclidean distance in image space (pixels)
+- **Per-keypoint error:** Breakdown by gripper, first disk, last disk
 
 ---
 
@@ -125,11 +107,19 @@ The system implements and benchmarks the following architectures:
 | DGCNN | Dynamic Graph CNN (EdgeConv) | 4096×3 points |
 
 ### 5.2 RGB Models
-| Model | Method | Input |
-|-------|--------|-------|
-| HRNet-Heatmap | High-Resolution Net + Soft-Argmax | 1024×1024 RGB |
-| Integral Regression | ResNet-50 + Soft-Argmax | 512-1024 RGB |
-| SimpleBaseline | ResNet-50 + Deconvolution | 224-512 RGB |
+| Model | Method |
+|-------|--------|
+| Integral Regression | ResNet-50 + Soft-Argmax |
+| DINOv2 Regression | DINOv2-S + Regression Head |
+| Hourglass | Stacked Hourglass Network |
+| SimpleBaseline | ResNet-50 + Deconvolution |
+| HRNet | High-Resolution Net + Heatmap |
+| CenterNet | ResNet-18 + Center Detection |
+| U-Net | Encoder-Decoder + Heatmap |
+| ViTPose | Vision Transformer + Regression |
+| ResNet Direct | ResNet-50 + Direct Regression |
+| ViT Direct | Vision Transformer + Direct Regression |
+| DETR | Transformer Detection |
 
 ### 5.3 Multimodal Fusion Models
 | Model | Method | Input |
@@ -144,9 +134,9 @@ The system implements and benchmarks the following architectures:
 ### 6.1 Accuracy Targets
 | Metric | Minimum | Target | Stretch |
 |--------|---------|--------|---------|
-| Mean error (simulation) | <10mm | <5mm | <2mm |
-| Mean error (real) | <20mm | <10mm | <1mm |
-| Success rate <5mm | 50% | 80% | 95% |
+| Mean pixel error (real, 224px training) | <100px | <70px | <60px |
+| Mean pixel error (real, 512px training) | <50px | <25px | <20px |
+| Multi-resolution ensemble | <25px | <20px | <16px |
 
 ### 6.2 Speed Requirements
 | Metric | Requirement |
@@ -170,7 +160,6 @@ The system implements and benchmarks the following architectures:
 - Snake robot is visible in the camera field of view
 - At least partial visibility of gripper and disk segments
 - Adequate lighting for feature extraction
-- Camera is calibrated with known intrinsics
 
 ### 7.2 Constraints
 - No depth sensor available for real data (microscope optics limitation)
@@ -179,15 +168,8 @@ The system implements and benchmarks the following architectures:
 - Real-time requirements for surgical integration
 
 ### 7.3 Out of Scope
+- 3D position estimation (depth)
 - Full 6-DoF pose estimation (rotation)
 - Multi-robot tracking
 - Deformable tissue interaction modeling
-- Closed-loop control implementation
 
----
-
-## 8. Revision History
-
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2026-05-04 | Chuntung Zhuang | Initial specification |
