@@ -352,10 +352,3 @@ At typical working distance of CMSR microscope:
 | Annotation errors | Medium | Cross-validation, outlier detection |
 | Hardware access delays | High | Front-load simulation work |
 
----
-
-## 10. Revision History
-
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2026-05-04 | Chuntung Zhuang | Initial test plan |

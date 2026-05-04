@@ -492,10 +492,3 @@ def ensemble_predict(models, image, scales):
 - Low confidence prediction: Return last valid prediction
 - Occlusion detection: Flag as uncertain
 
----
-
-## 8. Revision History
-
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2026-05-04 | Chuntung Zhuang | Initial specification |

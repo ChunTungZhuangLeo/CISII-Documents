@@ -549,10 +549,3 @@ Image Frame:
 | Hourglass | 512 | 60.0 px | 28 ms |
 | Multi-Res Ensemble | 512/768/1024 | 16.3 px | 120 ms |
 
----
-
-## 12. Revision History
-
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2026-05-04 | Chuntung Zhuang | Initial documentation |
