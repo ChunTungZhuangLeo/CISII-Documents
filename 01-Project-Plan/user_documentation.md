@@ -47,10 +47,7 @@ sudo apt-get install -y python3-pip python3-venv git
 
 ### 2.2 Clone Repository
 
-```bash
-git clone https://github.com/ChunTungZhuangLeo/eye-snake-localization.git
-cd eye-snake-localization
-```
+The code is stored in a private Eye Snake project repository for confidentiality. Please contact the project team for access.
 
 ### 2.3 Create Virtual Environment
 
