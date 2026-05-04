@@ -250,15 +250,6 @@ tensorboard --logdir checkpoints/sim_real_ft/logs
 # View at http://localhost:6006
 ```
 
-### 5.4 Training Tips
-
-| Scenario | Recommendation |
-|----------|----------------|
-| Limited GPU memory | Reduce batch size, use gradient checkpointing |
-| Overfitting | Add augmentation, reduce learning rate |
-| Slow convergence | Increase learning rate, add warmup |
-| Unstable training | Use gradient clipping, reduce lr |
-
 ---
 
 ## 6. Evaluation
@@ -347,62 +338,7 @@ predictor = Predictor(
 
 ---
 
-## 8. ROS Integration
-
-### 8.1 Launch ROS Node
-
-```bash
-# Source ROS and workspace
-source /opt/ros/noetic/setup.bash
-source catkin_ws/devel/setup.bash
-
-# Launch localization node
-roslaunch eye_snake_localization localization.launch \
-    model:=checkpoints/best.pth \
-    resolution:=512
-```
-
-### 8.2 ROS Topics
-
-| Topic | Type | Description |
-|-------|------|-------------|
-| `/microscope/image_raw` | `sensor_msgs/Image` | Input image (subscribed) |
-| `/eye_snake/keypoints` | `geometry_msgs/PoseArray` | Predicted 3D positions |
-| `/eye_snake/keypoints_2d` | `sensor_msgs/PointCloud` | 2D pixel coordinates |
-| `/eye_snake/visualization` | `sensor_msgs/Image` | Annotated image |
-
-### 8.3 ROS Parameters
-
-```yaml
-# localization.yaml
-eye_snake_localization:
-  model_path: "checkpoints/best.pth"
-  model_name: "integral_regression"
-  resolution: 512
-  rate: 30  # Hz
-  multi_scale: false
-  publish_visualization: true
-```
-
-### 8.4 Example Usage
-
-```python
-#!/usr/bin/env python
-import rospy
-from geometry_msgs.msg import PoseArray
-
-def callback(msg):
-    gripper = msg.poses[0].position
-    print(f"Gripper at: ({gripper.x:.2f}, {gripper.y:.2f}, {gripper.z:.2f}) mm")
-
-rospy.init_node('localization_listener')
-rospy.Subscriber('/eye_snake/keypoints', PoseArray, callback)
-rospy.spin()
-```
-
----
-
-## 9. Troubleshooting
+## 8. Troubleshooting
 
 ### 9.1 Common Issues
 
@@ -412,7 +348,6 @@ rospy.spin()
 | Model not loading | Version mismatch | Check PyTorch version compatibility |
 | Poor accuracy | Domain shift | Fine-tune on real data |
 | Slow inference | CPU fallback | Ensure CUDA is available |
-| ROS not connecting | Topic mismatch | Verify topic names |
 
 ### 9.2 Debug Mode
 
@@ -432,7 +367,7 @@ python inference.py --profile
 
 ---
 
-## 10. API Reference
+## 9. API Reference
 
 ### 10.1 Predictor Class
 
@@ -509,7 +444,7 @@ model = create_model(
 
 ---
 
-## 11. Appendix
+## 10. Appendix
 
 ### A. Keypoint Definitions
 
